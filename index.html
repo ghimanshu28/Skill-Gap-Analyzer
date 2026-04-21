@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillGap — Analyzer + Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="gamification.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">Skill<span>Gap</span></div>
+    <ul class="nav-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#roles">Roles</a></li>
+      <li><a href="#analyzer">Analyze</a></li>
+      <li><a href="#quiz-section">Quiz</a></li>
+      <li><a href="#gs-dashboard">🏆 Arena</a></li>
+    </ul>
+    <a href="#quiz-section" class="nav-cta">Take Quiz →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Free Career Roadmap Tool</div>
+    <h1 class="hero-title">Find Your<br/><span class="accent">Skill Gap.</span><br/>Close It Fast.</h1>
+    <p class="hero-sub">Upload your resume or select your role. We'll map out exactly what you're missing — and show you how to get there.</p>
+    <div class="hero-btns">
+      <a href="#analyzer" class="btn-primary">Analyze My Skills</a>
+      <a href="#quiz-section" class="btn-ghost">Take Skill Quiz ✦</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span>12k+</span>Resumes Analyzed</div>
+      <div class="stat"><span>50+</span>Roles Covered</div>
+      <div class="stat"><span>6</span>Industries</div>
+    </div>
+    <div class="nodes-bg">
+      <div class="node n1"></div>
+      <div class="node n2"></div>
+      <div class="node n3"></div>
+      <div class="node n4"></div>
+      <div class="node n5"></div>
+      <div class="node n6"></div>
+      <svg class="node-lines" viewBox="0 0 600 400" preserveAspectRatio="none">
+        <line x1="80" y1="300" x2="200" y2="180" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+        <line x1="200" y1="180" x2="380" y2="120" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+        <line x1="380" y1="120" x2="500" y2="200" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+        <line x1="500" y1="200" x2="460" y2="330" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+        <line x1="460" y1="330" x2="290" y2="370" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-label">Process</div>
+    <h2>How It Works</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Pick Your Role</h3>
+        <p>Choose from 50+ roles across 6 industries — from UI/UX to Data Science to Product Management.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Upload Resume <span class="optional-tag">Optional</span></h3>
+        <p>Drop your PDF resume and we'll auto-detect your existing skills to personalize the analysis.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Take the Quiz</h3>
+        <p>Answer up to 15 role-specific questions at your own pace. Skip any you like — every answer sharpens your results.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Get Your Roadmap</h3>
+        <p>See a visual skill gap report with missing skills, priority levels, and curated resources to close the gap.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRY / ROLE SELECTOR -->
+  <section class="roles" id="roles">
+    <div class="section-label">Browse</div>
+    <h2>Pick Your Industry & Role</h2>
+    <div class="industry-tabs" id="industryTabs">
+      <button class="tab-btn active" data-industry="design">Design</button>
+      <button class="tab-btn" data-industry="tech">Technology</button>
+      <button class="tab-btn" data-industry="data">Data & AI</button>
+      <button class="tab-btn" data-industry="product">Product</button>
+      <button class="tab-btn" data-industry="marketing">Marketing</button>
+      <button class="tab-btn" data-industry="finance">Finance</button>
+    </div>
+    <div class="roles-grid" id="rolesGrid"></div>
+  </section>
+
+  <!-- ANALYZER SECTION -->
+  <section class="analyzer" id="analyzer">
+    <div class="section-label">Tool</div>
+    <h2>Analyze Your Skills</h2>
+
+    <div class="analyzer-card">
+      <!-- Step 1: Role -->
+      <div class="analyzer-step active" id="step1">
+        <h3>Step 1 — Choose Your Target Role</h3>
+        <div class="select-wrapper">
+          <select id="roleSelect">
+            <option value="">Select a role...</option>
+          </select>
+        </div>
+        <p class="hint">Can't find your role? Type below</p>
+        <input type="text" id="customRole" class="custom-input" placeholder="e.g. Blockchain Developer"/>
+        <button class="btn-primary" onclick="goToStep2()">Next →</button>
+      </div>
+
+      <!-- Step 2: Resume Upload -->
+      <div class="analyzer-step" id="step2">
+        <h3>Step 2 — Upload Your Resume <span class="optional-tag">Optional</span></h3>
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-icon">📄</div>
+          <p>Drag & drop your PDF resume here</p>
+          <span>or</span>
+          <label class="upload-btn" for="resumeInput">Browse File</label>
+          <input type="file" id="resumeInput" accept=".pdf,.doc,.docx" hidden/>
+          <p class="upload-hint">PDF, DOC up to 5MB</p>
+        </div>
+        <div class="upload-preview" id="uploadPreview" style="display:none">
+          <span class="file-icon">📋</span>
+          <span id="fileName"></span>
+          <button onclick="removeFile()" class="remove-btn">✕</button>
+        </div>
+        <div class="step-nav">
+          <button class="btn-ghost" onclick="goToStep1()">← Back</button>
+          <button class="btn-primary" onclick="analyzeSkills()">Analyze Skills →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Results -->
+      <div class="analyzer-step" id="step3">
+        <div class="results-header">
+          <h3>Your Skill Gap Report</h3>
+          <div class="result-role" id="resultRole"></div>
+        </div>
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#edeae4" stroke-width="10"/>
+            <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52" fill="none" stroke="#2563eb" stroke-width="10"
+              stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="score-text">
+            <span id="scoreNum">0%</span>
+            <small>Match Score</small>
+          </div>
+        </div>
+        <div class="skills-breakdown">
+          <div class="skills-col">
+            <h4>✅ Skills You Have</h4>
+            <ul id="hasSkillsList"></ul>
+          </div>
+          <div class="skills-col">
+            <h4>⚠️ Skills to Learn</h4>
+            <ul id="missingSkillsList"></ul>
+          </div>
+        </div>
+        <div class="roadmap-section">
+          <h4>📍 Your Learning Roadmap</h4>
+          <div class="roadmap-nodes" id="roadmapNodes"></div>
+        </div>
+        <div class="resources-section">
+          <h4>🔗 Recommended Resources</h4>
+          <div class="resources-grid" id="resourcesGrid"></div>
+        </div>
+        <div class="quiz-cta-banner">
+          <div class="quiz-cta-text">
+            <span class="quiz-cta-icon">🧠</span>
+            <div>
+              <strong>Want a deeper analysis?</strong>
+              <p>Take our skill quiz for <em id="quizCtaRole"></em> and get pinpoint recommendations.</p>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="startQuizFromAnalyzer()">Take the Quiz →</button>
+        </div>
+        <button class="btn-ghost" onclick="resetAnalyzer()" style="margin-top:1rem">Start Over</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ SECTION ===================== -->
+  <section class="quiz-section" id="quiz-section">
+    <div class="section-label">Knowledge Check</div>
+    <h2>Skill Assessment Quiz</h2>
+    <p class="quiz-intro-sub">Attempt any questions out of 15 — the more you answer, the better your personalized recommendations.</p>
+
+    <!-- Quiz Step 1: Role Picker -->
+    <div class="quiz-card" id="quiz-pick">
+      <div class="quiz-pick-header">
+        <div class="quiz-pick-icon">🎯</div>
+        <h3>Choose Your Quiz Track</h3>
+        <p>Select the role you want to be assessed on</p>
+      </div>
+      <div class="quiz-role-grid" id="quizRoleGrid"></div>
+      <div class="quiz-custom-wrap">
+        <p class="hint">Or select from dropdown</p>
+        <div class="select-wrapper">
+          <select id="quizRoleSelect">
+            <option value="">Select a role...</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="quizStartBtn" onclick="startQuiz()">Begin Assessment →</button>
+      </div>
+    </div>
+
+    <!-- Quiz Active -->
+    <div class="quiz-card quiz-hidden" id="quiz-active">
+      <!-- Header bar -->
+      <div class="quiz-top-bar">
+        <div class="quiz-role-badge" id="quizRoleBadge"></div>
+        <div class="quiz-progress-info">
+          <span id="quizProgressText">Question 1 of 15</span>
+          <span class="quiz-skip-count" id="quizSkipCount">0 skipped</span>
+        </div>
+        <button class="quiz-skip-all-btn" onclick="finishQuizEarly()">Finish Early & See Results</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div>
+      </div>
+
+      <!-- Question -->
+      <div class="quiz-question-wrap" id="quizQuestionWrap">
+        <div class="quiz-q-number" id="quizQNumber">Q1</div>
+        <div class="quiz-q-skill-tag" id="quizQSkillTag"></div>
+        <h3 class="quiz-question-text" id="quizQuestionText"></h3>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="quiz-nav">
+        <button class="btn-ghost quiz-nav-btn" onclick="skipQuestion()">Skip Question →</button>
+        <button class="btn-primary quiz-nav-btn" id="quizNextBtn" onclick="nextQuestion()" disabled>Next →</button>
+      </div>
+
+      <!-- Mini answered tracker -->
+      <div class="quiz-dot-tracker" id="quizDotTracker"></div>
+    </div>
+
+    <!-- Quiz Results -->
+    <div class="quiz-card quiz-hidden" id="quiz-results">
+      <div class="quiz-results-header">
+        <h3>📊 Your Quiz Results</h3>
+        <div class="quiz-result-role-badge" id="quizResultRoleBadge"></div>
+      </div>
+
+      <!-- Score overview -->
+      <div class="quiz-score-overview">
+        <div class="quiz-score-block">
+          <div class="quiz-score-ring-wrap">
+            <svg class="quiz-score-ring" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#edeae4" stroke-width="10"/>
+              <circle class="quiz-ring-fill" id="quizRingFill" cx="60" cy="60" r="52" fill="none" stroke="#2563eb" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="score-text">
+              <span id="quizScoreNum">0%</span>
+              <small>Score</small>
+            </div>
+          </div>
+          <div class="quiz-score-meta">
+            <div class="quiz-meta-item">
+              <span id="quizCorrectCount">0</span>
+              <small>Correct</small>
+            </div>
+            <div class="quiz-meta-item quiz-meta-wrong">
+              <span id="quizWrongCount">0</span>
+              <small>Wrong</small>
+            </div>
+            <div class="quiz-meta-item quiz-meta-skip">
+              <span id="quizSkippedCount">0</span>
+              <small>Skipped</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verdict -->
+        <div class="quiz-verdict" id="quizVerdict"></div>
+      </div>
+
+      <!-- Skill-by-skill breakdown -->
+      <div class="quiz-skill-breakdown">
+        <h4>📌 Skill-by-Skill Breakdown</h4>
+        <div class="quiz-skill-bars" id="quizSkillBars"></div>
+      </div>
+
+      <!-- Weak areas & resources -->
+      <div class="quiz-weak-section">
+        <h4>🔴 Skills You Need to Strengthen</h4>
+        <div class="quiz-weak-grid" id="quizWeakGrid"></div>
+      </div>
+
+      <!-- Strong areas -->
+      <div class="quiz-strong-section" id="quizStrongSection">
+        <h4>🟢 Your Strengths</h4>
+        <div class="quiz-strong-tags" id="quizStrongTags"></div>
+      </div>
+
+      <!-- Learning resources -->
+      <div class="quiz-resources-section">
+        <h4>📚 Curated Learning Resources for You</h4>
+        <div class="quiz-resources-grid" id="quizResourcesGrid"></div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="quiz-result-actions">
+        <button class="btn-primary" onclick="retakeQuiz()">Retake Quiz</button>
+        <button class="btn-ghost" onclick="resetQuiz()">Change Role</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- GAMIFICATION DASHBOARD -->
+  <section class="gs-dashboard-section" id="gs-dashboard">
+    <div class="gs-dashboard-inner">
+      <div class="gs-dashboard-header">
+        <div>
+          <div class="section-label">Your Progress</div>
+          <h2 class="gs-dashboard-title">🏆 Skill Arena</h2>
+        </div>
+        <button class="gs-reset-btn" onclick="if(confirm('Reset all your progress?')) { GS.reset(); }">Reset Progress</button>
+      </div>
+
+      <!-- Level progress card -->
+      <div class="gs-level-progress-card">
+        <div class="gs-level-badge-big" id="gs-level-icon">🌱</div>
+        <div class="gs-level-info">
+          <div class="gs-level-name-big" id="gs-level-name">Beginner</div>
+          <div class="gs-level-bar-track">
+            <div class="gs-level-bar-fill" id="gs-progress-fill" style="width:0%"></div>
+          </div>
+          <div class="gs-level-bar-txt" id="gs-progress-txt">0 / 100 XP to Explorer</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:0.75rem;color:#9ca3af;font-weight:600;margin-bottom:4px">TOTAL XP</div>
+          <div style="font-family:Bricolage Grotesque,sans-serif;font-size:2rem;font-weight:800;color:#2563eb" id="gs-xp">0 XP</div>
+        </div>
+      </div>
+
+      <!-- Stats grid -->
+      <div class="gs-stats-grid">
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">⚡</div>
+          <div class="gs-stat-value" id="gs-dash-xp">0</div>
+          <div class="gs-stat-label">Total XP</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">🧠</div>
+          <div class="gs-stat-value" id="gs-dash-quizzes">0</div>
+          <div class="gs-stat-label">Quizzes Done</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">✅</div>
+          <div class="gs-stat-value" id="gs-dash-correct">0</div>
+          <div class="gs-stat-label">Correct Answers</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">🔥</div>
+          <div class="gs-stat-value" id="gs-dash-streak">0 days</div>
+          <div class="gs-stat-label">Current Streak</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">🗺️</div>
+          <div class="gs-stat-value" id="gs-dash-roles">0</div>
+          <div class="gs-stat-label">Roles Quizzed</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">🏅</div>
+          <div class="gs-stat-value" id="gs-dash-badges">0 / 13</div>
+          <div class="gs-stat-label">Badges Earned</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">🎖️</div>
+          <div class="gs-stat-value" id="gs-dash-level">🌱 Beginner</div>
+          <div class="gs-stat-label">Current Level</div>
+        </div>
+        <div class="gs-stat-card">
+          <div class="gs-stat-icon">📈</div>
+          <div class="gs-stat-value" id="gs-dash-maxstreak">0 days</div>
+          <div class="gs-stat-label">Best Streak</div>
+        </div>
+      </div>
+
+      <!-- Main dashboard grid -->
+      <div class="gs-dash-grid">
+        <!-- Daily Missions -->
+        <div class="gs-panel">
+          <div class="gs-panel-title">🎯 Daily Missions</div>
+          <div id="gs-missions-list">
+            <div style="color:#9ca3af;font-size:0.85rem">Loading missions...</div>
+          </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="gs-panel">
+          <div class="gs-panel-title">🏆 Leaderboard</div>
+          <div id="gs-leaderboard-list"></div>
+        </div>
+
+        <!-- Streak -->
+        <div class="gs-panel">
+          <div class="gs-panel-title">🔥 Streak</div>
+          <div class="gs-streak-display" id="gs-streak-big">0 🔥</div>
+          <div class="gs-streak-label">day streak</div>
+          <div class="gs-streak-max" id="gs-streak-max-txt">Best: 0 days</div>
+          <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,0.06)">
+            <div style="font-size:0.72rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Milestones</div>
+            <div style="display:flex;flex-direction:column;gap:.4rem">
+              <div class="gs-milestone" id="gs-ms-3">🔥 3-Day Streak <span>+50 XP</span></div>
+              <div class="gs-milestone" id="gs-ms-7">🗓️ 7-Day Streak <span>+100 XP</span></div>
+              <div class="gs-milestone" id="gs-ms-14">⚡ 14-Day Streak <span>+200 XP</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges - spans full width -->
+        <div class="gs-panel gs-panel-badges">
+          <div class="gs-panel-title">🏅 Badges & Achievements</div>
+          <div class="gs-badges-grid" id="gs-badges-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">Skill<span>Gap</span></div>
+    <p>Free. No signup required. Just results.</p>
+    <p class="footer-copy">© 2026 SkillGap Analyzer</p>
+  </footer>
+
+
+  <!-- GAMIFICATION HUD -->
+  <div class="gs-hud" id="gs-hud">
+    <div class="gs-hud-section">
+      <div class="gs-hud-level-badge" id="gs-hud-level">🌱 Beginner</div>
+    </div>
+    <div class="gs-hud-divider"></div>
+    <div class="gs-hud-section">
+      <div class="gs-hud-label">XP</div>
+      <div class="gs-hud-value" id="gs-hud-xp">0 XP</div>
+    </div>
+    <div class="gs-hud-progress-wrap">
+      <div class="gs-hud-bar-track">
+        <div class="gs-hud-bar-fill" id="gs-hud-progress-fill" style="width:0%"></div>
+      </div>
+      <div id="gs-progress-txt">0 / 100 XP to Explorer</div>
+    </div>
+    <div class="gs-hud-divider"></div>
+    <div class="gs-hud-section gs-hud-streak">
+      <span id="gs-streak">0 🔥</span>
+    </div>
+    <div class="gs-hud-divider"></div>
+    <div class="gs-hud-section">
+      <span style="font-size:0.75rem;font-weight:600;color:#9ca3af">🏅</span>
+      <span class="gs-hud-value" id="gs-badge-count">0</span>
+    </div>
+    <button class="gs-hud-dash-btn" onclick="document.getElementById('gs-dashboard').scrollIntoView({behavior:'smooth'})">📊 Dashboard</button>
+  </div>
+
+  <script src="gamification.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
